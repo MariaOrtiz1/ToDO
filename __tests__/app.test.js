@@ -32,28 +32,37 @@ describe('app routes', () => {
 
       const expectation = [
         {
-          id: 1,
+          id: 4,
           todo: 'task1',
           completed: false,
-          owner_id: 1
+          owner_id: 2
         },
         {
-          id: 2,
+          id: 5,
           todo: 'task2',
           completed: false,
-          owner_id: 1
+          owner_id: 2
         },
         {
-          id: 3,
+          id: 6,
           todo: 'task3',
           completed: false,
-          owner_id: 1
+          owner_id: 2
         }
       ];
       
+      for (let todo of expectation) {
+        await fakeRequest(app)
+          .post('/api/todos')
+          .send(todo)
+          .set('Authorization', token)
+          .expect('Content-Type', /json/)
+          .expect(200);
+      }
 
       const data = await fakeRequest(app)
-        .get('/todos')
+        .get('/api/todos')
+        .set('Authorization', token)
         .expect('Content-Type', /json/)
         .expect(200);
 
